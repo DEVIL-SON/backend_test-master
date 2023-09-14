@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Companies List</title>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 70%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Associate Employee">
+    </form>
+    <table>
+        <tr>
+            <th style="width: 20%;">Company</th>
+            <th>Employees</th>
+        </tr>
+        {% for company in companies %}
+        <tr>
+            <td>{{ company.name }} <a href="#">(Add Employee)</a></td>
+            <td>
+                {% for employee in company.employees.all %}
+                {{ employee.first_name }} {{ employee.last_name }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                No employees associated
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
